@@ -77,12 +77,14 @@ const BuilderPage = () => {
       getExactVersion: flowVersion.state === FlowVersionState.LOCKED,
     });
   flowCanvasHooks.useSetSocketListener(refetchPiece);
+  flowCanvasHooks.useListenToExistingRun();
+
   const [hasCanvasBeenInitialised, setHasCanvasBeenInitialised] =
     useState(false);
 
   return (
     <div className="flex h-full w-full flex-col relative">
-      <div className="z-50">
+      <div className="z-40">
         <BuilderHeader />
       </div>
       <ResizablePanelGroup direction="horizontal">
@@ -139,7 +141,9 @@ const BuilderPage = () => {
             [animateResizeClassName]: !isDraggingHandle,
           })}
           style={{
-            transitionDuration: `${flowCanvasConsts.SIDEBAR_ANIMATION_DURATION}ms`,
+            transitionDuration: `${
+              isDraggingHandle ? 0 : flowCanvasConsts.SIDEBAR_ANIMATION_DURATION
+            }ms`,
           }}
         >
           <div ref={rightSidePanelRef} className="h-full w-full">
@@ -164,6 +168,7 @@ const BuilderPage = () => {
           </div>
         </ResizablePanel>
       </ResizablePanelGroup>
+
       <ChatDrawer />
     </div>
   );
